@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="Carry-Up" content="width=device-width, initial-scale=1.0">
+    <title>Carry-Up - Assistência no Transporte</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #000;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #333;
+            z-index: 1000;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 64px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            height: 36px;
+            width: auto;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+            padding: 8px 24px;
+            border-radius: 24px;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Tab Navigation */
+        .tab-navigation {
+            margin-top: 64px;
+            background: #111827;
+            border-bottom: 1px solid #374151;
+        }
+
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            background: #1f2937;
+            border-radius: 8px;
+            margin: 0 20px;
+            padding: 4px;
+        }
+
+        .tab-button {
+            flex: 1;
+            background: transparent;
+            color: #9ca3af;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+
+        .tab-button.active {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            color: white;
+        }
+
+        .tab-button:hover:not(.active) {
+            color: #60a5fa;
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            min-height: calc(100vh - 64px);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #1f2937, #000, #374151);
+            padding: 80px 0;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 24px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-text p {
+            font-size: 20px;
+            color: #d1d5db;
+            margin-bottom: 32px;
+        }
+
+        .features-box {
+            background: rgba(17, 24, 39, 0.5);
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #374151;
+            margin-bottom: 32px;
+        }
+
+        .features-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 18px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            font-size: 14px;
+            color: #d1d5db;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .btn-secondary {
+            border: 2px solid #4b5563;
+            color: #d1d5db;
+            padding: 12px 32px;
+            border-radius: 24px;
+            text-decoration: none;
+            transition: all 0.3s;
+            background: transparent;
+        }
+
+        .btn-secondary:hover {
+            border-color: #3b82f6;
+            color: #60a5fa;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .stat-item p {
+            color: #9ca3af;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 384px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-badge {
+            position: absolute;
+            top: -16px;
+            right: -16px;
+            background: #10b981;
+            color: #065f46;
+            padding: 8px 16px;
+            border-radius: 24px;
+            font-weight: 600;
+            transform: rotate(12deg);
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+
+        /* About Section */
+        .about {
+            padding: 80px 0;
+            background: #000;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 64px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .section-title p {
+            font-size: 20px;
+            color: #d1d5db;
+            max-width: 768px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+            margin-bottom: 64px;
+        }
+
+        .about-text h3 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            margin-bottom: 24px;
+        }
+
+        .about-text p {
+            font-size: 18px;
+            color: #d1d5db;
+            margin-bottom: 24px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 24px;
+            background: #111827;
+            border-radius: 12px;
+            border: 1px solid #374151;
+        }
+
+        .stat-icon {
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 24px;
+        }
+
+        .features-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: #111827;
+            padding: 24px;
+            border-radius: 12px;
+            border: 1px solid #374151;
+            transition: border-color 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: #3b82f6;
+        }
+
+        .feature-card h4 {
+            font-size: 18px;
+            margin: 16px 0 12px;
+        }
+
+        .feature-card p {
+            color: #d1d5db;
+            font-size: 14px;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 80px 0;
+            background: #000;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+        }
+
+        .service-card {
+            background: #111827;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            border: 1px solid #374151;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            margin: 24px 0 12px;
+        }
+
+        .service-card p {
+            color: #d1d5db;
+            margin-bottom: 16px;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 24px;
+        }
+
+        .service-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #d1d5db;
+        }
+
+        .feature-dot {
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            border-radius: 50%;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 80px 0;
+            background: #000;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        .portfolio-item {
+            background: #111827;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #374151;
+            transition: all 0.3s;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .portfolio-content {
+            padding: 24px;
+        }
+
+        .portfolio-content h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .portfolio-content p {
+            color: #d1d5db;
+            font-size: 14px;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            background: #000;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            background: #111827;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Footer */
+        .footer {
+            background: #030712;
+            border-top: 1px solid #374151;
+            padding: 64px 0 32px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .footer-section p {
+            color: #9ca3af;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-link {
+            background: #374151;
+            padding: 8px;
+            border-radius: 8px;
+            color: #d1d5db;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .social-link:hover {
+            background: #3b82f6;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 32px;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tab-buttons {
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 36px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="logo">
+                <img src="imgs/Black_White_Modern_Drone_Pilot_Logo__1_-removebg-preview.png" alt="Carry-Up Logo">
+                <h1>Carry-Up</h1>
+            </div>
+            <a href="#contato" class="btn-primary">Solicitar Orçamento</a>
+        </nav>
+    </header>
+
+    <!-- Tab Navigation -->
+    <div class="tab-navigation">
+        <div class="container">
+            <div class="tab-buttons">
+                <button class="tab-button active" onclick="showTab('inicio')">Início</button>
+                <button class="tab-button" onclick="showTab('sobre')">Sobre</button>
+                <button class="tab-button" onclick="showTab('servicos')">Serviços</button>
+                <button class="tab-button" onclick="showTab('portfolio')">Portfolio</button>
+                <button class="tab-button" onclick="showTab('contato')">Contato</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Content: Início -->
+    <div id="inicio" class="tab-content active">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-text">
+                        <h1>
+                            Ajudamos pessoas a
+                            <span class="gradient-text">carregar peso com segurança</span>
+                        </h1>
+                        <p>
+                            Nossa solução foi desenvolvida especialmente para ajudar idosos e pessoas com deficiência 
+                            a transportar objetos pesados, prevenindo lesões e proporcionando mais independência no dia a dia.
+                        </p>
+
+                        <div class="features-box">
+                            <h3>
+                                ❤️ Características Principais
+                            </h3>
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <span>🎤</span>
+                                    <span>Comando de voz</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span>🛡️</span>
+                                    <span>Resistente à água</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span>📺</span>
+                                    <span>Tela com legendas e Libras</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span>📡</span>
+                                    <span>Sensor de movimento</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-buttons">
+                            <button class="btn-primary" onclick="showTab('contato')">
+                                Solicitar Demonstração →
+                            </button>
+                            <button class="btn-secondary" onclick="showTab('sobre')">
+                                ▶ Ver Como Funciona
+                            </button>
+                        </div>
+
+                        <div class="stats">
+                            <div class="stat-item">
+                                <h3>100%</h3>
+                                <p>Acessível</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>50+</h3>
+                                <p>Famílias Ajudadas</p>
+                            </div>
+                            <div class="stat-item">
+                                <h3>24/7</h3>
+                                <p>Disponibilidade</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-image">
+                        <img src="imgs/drone veia.jpg" height="200px" width="200px" alt="Carry-Up Dispositivo">
+                        <div class="hero-badge">
+                            Acessibilidade Total
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Tab Content: Sobre -->
+    <div id="sobre" class="tab-content">
+        <section class="about">
+            <div class="container">
+                <div class="section-title">
+                    <h2>
+                        Sobre a <span class="gradient-text">Carry-Up</span>
+                    </h2>
+                    <p>
+                        Desenvolvemos soluções assistivas para promover independência e segurança para idosos e pessoas com deficiência
+                    </p>
+                </div>
+
+                <div class="about-content">
+                    <div class="about-text">
+                        <h3>
+                            ❤️ Nosso Propósito
+                        </h3>
+                        <p>
+                            O objetivo principal da nossa solução é ajudar pessoas, especialmente idosos e deficientes, 
+                            a carregar peso de forma segura, poupando-as de possíveis lesões e proporcionando maior independência.
+                        </p>
+                        <p>
+                            Acreditamos que a tecnologia deve ser uma ponte para a inclusão, oferecendo soluções 
+                            práticas que melhoram a qualidade de vida das pessoas que mais precisam.
+                        </p>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-icon">❤️</div>
+                                <h3>100%</h3>
+                                <p>Objetivo Social</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">👥</div>
+                                <h3>50+</h3>
+                                <p>Famílias Beneficiadas</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">🏆</div>
+                                <h3>500+</h3>
+                                <p>Testes de Segurança</p>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">🛡️</div>
+                                <h3>10+</h3>
+                                <p>Certificações</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hero-image">
+                        <img src="imgs/drone sacola.jpg" alt="Idoso utilizando dispositivo assistivo">
+                        <div class="hero-badge">
+                            Inclusão
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="text-align: center; margin-bottom: 32px;">Características Especiais</h3>
+                <div class="features-section">
+                    <div class="feature-card">
+                        <div class="stat-icon">🎤</div>
+                        <h4>Comando de Voz</h4>
+                        <p>Interface totalmente acessível por comando de voz para facilitar o uso</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="stat-icon">👁️</div>
+                        <h4>Legendas e Libras</h4>
+                        <p>Tela frontal com legendas e interpretação em Libras para deficientes auditivos</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="stat-icon">📡</div>
+                        <h4>Sensor de Movimento</h4>
+                        <p>Detecta obstáculos e pessoas para navegação segura e autônoma</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="stat-icon">💧</div>
+                        <h4>Resistente à Água</h4>
+                        <p>Funciona perfeitamente em condições de chuva e umidade</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="stat-icon">🎨</div>
+                        <h4>Personalizável</h4>
+                        <p>Adapta-se às necessidades específicas de cada usuário</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Tab Content: Serviços -->
+    <div id="servicos" class="tab-content">
+        <section class="services">
+            <div class="container">
+                <div class="section-title">
+                    <h2>
+                        Nossos <span class="gradient-text">Planos</span>
+                    </h2>
+                    <p>
+                        Diferentes opções de transporte assistivo conforme peso e duração, adaptadas às suas necessidades
+                    </p>
+                </div>
+
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="stat-icon">📦</div>
+                        <h3>Transporte Leve</h3>
+                        <p>Ideal para objetos do dia a dia como compras, medicamentos e itens pessoais.</p>
+                        <ul class="service-features">
+                            <li><span class="feature-dot"></span>Até 2kg</li>
+                            <li><span class="feature-dot"></span>30 min de uso</li>
+                            <li><span class="feature-dot"></span>Comando de voz</li>
+                        </ul>
+                        <button class="btn-primary" style="width: 100%;">Escolher Plano</button>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="stat-icon">⚖️</div>
+                        <h3>Transporte Médio</h3>
+                        <p>Para objetos de peso moderado como ferramentas, livros e equipamentos.</p>
+                        <ul class="service-features">
+                            <li><span class="feature-dot"></span>Até 5kg</li>
+                            <li><span class="feature-dot"></span>45 min de uso</li>
+                            <li><span class="feature-dot"></span>Sensor de movimento</li>
+                        </ul>
+                        <button class="btn-primary" style="width: 100%;">Escolher Plano</button>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="stat-icon">🕐</div>
+                        <h3>Transporte Prolongado</h3>
+                        <p>Para uso contínuo durante atividades que demandam mais tempo.</p>
+                        <ul class="service-features">
+                            <li><span class="feature-dot"></span>Até 3kg</li>
+                            <li><span class="feature-dot"></span>90 min de uso</li>
+                            <li><span class="feature-dot"></span>Resistente à água</li>
+                        </ul>
+                        <button class="btn-primary" style="width: 100%;">Escolher Plano</button>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="stat-icon">☀️</div>
+                        <h3>Carregamento Solar</h3>
+                        <p>Sistema de recarga sustentável usando energia solar para maior autonomia.</p>
+                        <ul class="service-features">
+                            <li><span class="feature-dot"></span>Painéis integrados</li>
+                            <li><span class="feature-dot"></span>Recarga automática</li>
+                            <li><span class="feature-dot"></span>Eco-friendly</li>
+                        </ul>
+                        <button class="btn-primary" style="width: 100%;">Escolher Plano</button>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="stat-icon">⚡</div>
+                        <h3>Carregamento Elétrico</h3>
+                        <p>Recarga rápida através de fonte elétrica convencional.</p>
+                        <ul class="service-features">
+                            <li><span class="feature-dot"></span>Carregamento rápido</li>
+                            <li><span class="feature-dot"></span>Base de recarga</li>
+                            <li><span class="feature-dot"></span>Indicador de bateria</li>
+                        </ul>
+                        <button class="btn-primary" style="width: 100%;">Escolher Plano</button>
+                    </div>
+
+                    <div class="service-card">
+                        <div class="stat-icon">🛡️</div>
+                        <h3>Assistência Personalizada</h3>
+                        <p>Configurações adaptadas às necessidades específicas de cada usuário.</p>
+                        <ul class="service-features">
+                            <li><span class="feature-dot"></span>Tela com Libras</li>
+                            <li><span class="feature-dot"></span>Legendas</li>
+                            <li><span class="feature-dot"></span>Controle adaptativo</li>
+                        </ul>
+                        <button class="btn-primary" style="width: 100%;">Escolher Plano</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Tab Content: Portfolio -->
+    <div id="portfolio" class="tab-content">
+        <section class="portfolio">
+            <div class="container">
+                <div class="section-title">
+                    <h2>
+                        Nosso <span class="gradient-text">Portfolio</span>
+                    </h2>
+                    <p>
+                        Conheça nossos produtos e soluções em assistência para transporte de peso
+                    </p>
+                </div>
+
+                <div class="portfolio-grid">
+                    <div class="portfolio-item">
+                        <img src="imgs/e8b86255-ae00-4440-bd91-035016739a00.png" alt="Logo Carry-Up">
+                        <div class="portfolio-content">
+                            <h3>Identidade Visual Carry-Up</h3>
+                            <p>Design moderno e acessível que representa nossa missão de inclusão e tecnologia assistiva.</p>
+                        </div>
+                    </div>
+
+                    <div class="portfolio-item">
+                        <img src="imgs/drone sacola.jpg" alt="Carry-Up Modelo Principal">
+                        <div class="portfolio-content">
+                            <h3>Equipamento Inteligente Principal</h3>
+                            <p>Nosso modelo principal com capacidade de até 5kg e sistema de navegação inteligente para auxílio no transporte.</p>
+                        </div>
+                    </div>
+
+                    <div class="portfolio-item">
+                        <img src="imgs/drone veia.jpg" alt="Carry-Up Compacto">
+                        <div class="portfolio-content">
+                            <h3>Robô Compacto Doméstico</h3>
+                            <p>Versão compacta ideal para uso doméstico, com comando de voz e interface acessível para idosos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Tab Content: Contato -->
+    <div id="contato" class="tab-content">
+        <section class="contact">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Entre em <span class="gradient-text">Contato</span></h2>
+                    <p>
+                        Estamos à disposição para responder suas dúvidas e receber seu feedback.
+                    </p>
+                </div>
+
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <input type="text" placeholder="Seu Nome" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Seu Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Sua Mensagem" rows="6" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn-primary" style="width: 100%;">
+                                Enviar Mensagem
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="gradient-text">Carry-Up</h3>
+                    <p>
+                        Especialistas em soluções assistivas, oferecendo tecnologias inovadoras 
+                        para ajudar pessoas a carregar peso com segurança e independência.
+                    </p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📷</a>
+                        <a href="#" class="social-link">📘</a>
+                        <a href="#" class="social-link">🎥</a>
+                        <a href="#" class="social-link">💼</a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Serviços</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Transporte Leve</a></li>
+                        <li><a href="#">Transporte Médio</a></li>
+                        <li><a href="#">Transporte Prolongado</a></li>
+                        <li><a href="#">Carregamento Solar</a></li>
+                        <li><a href="#">Assistência Personalizada</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Empresa</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Sobre Nós</a></li>
+                        <li><a href="#">Nossa Equipe</a></li>
+                        <li><a href="#">Certificações</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Carreiras</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <p>📞 (11) 9999-9999</p>
+                    <p>✉️ contato@carry-up.com.br</p>
+                    <p>📍 São Paulo, SP - Brasil</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2024 Carry-Up. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Smooth scrolling for footer links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                if (targetId === 'contato') {
+                    showTab('contato');
+                    // Update tab button state
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.tab-button')[4].classList.add('active');
+                }
+            });
+        });
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(0, 0, 0, 0.98)';
+            } else {
+                header.style.background = 'rgba(0, 0, 0, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
